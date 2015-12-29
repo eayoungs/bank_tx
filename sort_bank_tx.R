@@ -4,7 +4,6 @@
 # __license__ = "GNU Affero (GPLv3)"
 # 
 
-
 # install.packages("lubridate") ## Comment out after first calsource()
 # library("lubridate")
 
@@ -23,11 +22,16 @@ TxImport <- function(f.name, date.col, tx.col, start.date){
   # Returns:
   #   A dataframe containing transaction data for the time period specified by
   #   parameters, with useful R datatypes for date & factors
-  tx.data = read.csv(f.name, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+  tx.data = read.csv(f.name, header = TRUE, sep = ",",
+                     stringsAsFactors = FALSE) 
   
   tx.data[,date.col] = as.Date(tx.data[,date.col])
-  tx.data[,tx.col]= factor(tx.data[,tx.col])
-  tx.sub = tx.data[which(tx.data[,date.col] >= start.date), ]
+  if(!missing(tx.col)){
+    tx.data[,tx.col]= factor(tx.data[,tx.col])
+  }
+  if(!missing(start.date)){
+    tx.data = tx.data[which(tx.data[,date.col] >= start.date), ]
+  }
 
-  return(tx.sub)
+  return(tx.data)
 }
