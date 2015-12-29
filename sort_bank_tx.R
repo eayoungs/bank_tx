@@ -9,23 +9,25 @@
 # library("lubridate")
 
 
-SelectCurrentMnth <- function(fname, start.date){
+TxImport <- function(f.name, date.col, tx.col, start.date){
   # Reads exported transaction data from Simple (online bank) and return a
   # dataframe with correct R types for sorting
   # 
   # Args:
-  #   fname (String): Name of file to be processed
-  #   start.date (Date): Starting date for transactions to be subset
+  #   f.name (String): Name of file to be processed
+  #   date.col (String): Name of the dataframe's column to be used for dates
+  #   tx.col (String): Name of the dataframes' column to be used for
+  #                    transaction type 
+  #   date.range (Date): Starting date for transactions to be subset
   # 
   # Returns:
-  #   A dataframe containing transaction data fro the time period specified by
+  #   A dataframe containing transaction data for the time period specified by
   #   parameters, with useful R datatypes for date & factors
-  bank.tx = read.csv(fname, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+  tx.data = read.csv(f.name, header = TRUE, sep = ",", stringsAsFactors = FALSE)
   
-  month.tx = bank.tx[which(bank.tx$Date >= start.date), ]
-  month.tx$Date = as.Date(month.tx$Date)
-  month.tx$Activity = factor(month.tx$Activity)
-  month.tx$Category = factor(month.tx$Category)
+  tx.data[,date.col] = as.Date(tx.data[,date.col])
+  tx.data[,tx.col]= factor(tx.data[,tx.col])
+  tx.sub = tx.data[which(tx.data[,date.col] >= start.date), ]
 
-  return(month.tx)
+  return(tx.sub)
 }
