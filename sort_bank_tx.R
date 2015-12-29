@@ -9,8 +9,8 @@
 
 
 TxImport <- function(f.name, date.col, tx.col, start.date){
-  # Reads exported transaction data from Simple (online bank) and return a
-  # dataframe with correct R types for sorting
+  # Reads exported bank transaction data from online sources and return a
+  # dataframe with usefule R types for sorting
   # 
   # Args:
   #   f.name (String): Name of file to be processed
