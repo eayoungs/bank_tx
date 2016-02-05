@@ -5,10 +5,10 @@
 # 
 
 # install.packages("lubridate") ## Comment out after first calsource()
-# library("lubridate")
+library("lubridate")
 
 
-TxImport <- function(f.name, date.col, tx.col, start.date){
+ImportTx <- function(f.name, date.col, tx.col, start.date, end.date){
   # Reads exported bank transaction data from online sources and return a
   # dataframe with usefule R types for sorting
   # 
@@ -25,12 +25,13 @@ TxImport <- function(f.name, date.col, tx.col, start.date){
   tx.data = read.csv(f.name, header = TRUE, sep = ",",
                      stringsAsFactors = FALSE) 
   
-  tx.data[,date.col] = as.Date(tx.data[,date.col])
+  tx.data[,date.col] = as.Date(tx.data[,date.col], format = '%m/%d/%y')
   if(!missing(tx.col)){
     tx.data[,tx.col]= factor(tx.data[,tx.col])
   }
-  if(!missing(start.date)){
-    tx.data = tx.data[which(tx.data[,date.col] >= start.date), ]
+  if(!missing(start.date) & !missing(end.date)){
+    tx.data = tx.data[which(tx.data[,date.col] >= start.date &
+                            tx.data[,date.col] <= end.date), ]
   }
 
   return(tx.data)
