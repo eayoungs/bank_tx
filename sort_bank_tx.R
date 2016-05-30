@@ -25,7 +25,7 @@ ImportTx <- function(f.name, date.col, tx.col, start.date, end.date){
   tx.data = read.csv(f.name, header = TRUE, sep = ",",
                      stringsAsFactors = FALSE) 
   
-  tx.data[,date.col] = as.Date(tx.data[,date.col], format = '%m/%d/%y')
+  tx.data[,date.col] = as.Date(tx.data[,date.col])
   if(!missing(tx.col)){
     tx.data[,tx.col]= factor(tx.data[,tx.col])
   }
