@@ -30,7 +30,7 @@ ImportTx <- function(f.name, date.col, tx.col, start.date, end.date){
   if(!missing(date.col))  {
     tx.data[,date.col] = as.Date(tx.data[,date.col])
   }
-  if(!missing(tx.col)) {
+    if(!missing(tx.col)){
     tx.data[,tx.col]= factor(tx.data[,tx.col])
   }
   if(!missing(start.date) & missing(end.date)) {
