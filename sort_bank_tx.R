@@ -4,11 +4,11 @@
 # __license__ = "GNU Affero (GPLv3)"
 # 
 
-install.packages("lubridate") ## Comment out after first call to source()
-library("lubridate")
+#install.packages("lubridate") ## Comment out after first call to source()
+#library("lubridate")
 
 
-ImportTx <- function(f.name, date.col, tx.col, start.date, end.date){
+ImportTx <- function(f.name, date.col, start.date, end.date){
   # Reads exported bank transaction data from online sources and return a
   # dataframe with usefule R types for sorting
   # 
@@ -26,12 +26,9 @@ ImportTx <- function(f.name, date.col, tx.col, start.date, end.date){
   #   A dataframe containing transaction data for the time period specified by
   #   parameters, with useful R datatypes for date & factors
   tx.data = read.csv(f.name, header = TRUE, sep = ",",
-                     stringsAsFactors = FALSE) 
+                     stringsAsFactors = TRUE) 
   if(!missing(date.col))  {
     tx.data[,date.col] = as.Date(tx.data[,date.col])
-  }
-    if(!missing(tx.col)){
-    tx.data[,tx.col]= factor(tx.data[,tx.col])
   }
   if(!missing(start.date) & missing(end.date)) {
     tx.data = tx.data[which(tx.data[,date.col] >= start.date), ]
@@ -43,3 +40,11 @@ ImportTx <- function(f.name, date.col, tx.col, start.date, end.date){
 
   return(tx.data)
 }
+
+#aggregate(Amount.colnm ~ Category.colnm, bank_tx.df, sum)
+#apr.tx = simple.tx[simple.tx$Date >= "2018-04-01" & simple.tx$Date <= "2018-04-30",]
+#apr.tx[apr.tx$Category.folder=="Utilities" | apr.tx$Category.folder=="Technology",]$Description
+#apr.tx[apr.tx$Category.folder=="Utilities" | 
+#         apr.tx$Category.folder=="Technology" | 
+#         apr.tx$Category=="Memberships",][,c("Description", "Amount")]
+#sum(apr.tx[apr.tx$Category.folder=="Utilities" | apr.tx$Category.folder=="Technology",]$Amount)
