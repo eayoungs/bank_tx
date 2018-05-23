@@ -41,10 +41,56 @@ ImportTx <- function(f.name, date.col, start.date, end.date){
   return(tx.data)
 }
 
-#aggregate(Amount.colnm ~ Category.colnm, bank_tx.df, sum)
-#apr.tx = simple.tx[simple.tx$Date >= "2018-04-01" & simple.tx$Date <= "2018-04-30",]
-#apr.tx[apr.tx$Category.folder=="Utilities" | apr.tx$Category.folder=="Technology",]$Description
-#apr.tx[apr.tx$Category.folder=="Utilities" | 
-#         apr.tx$Category.folder=="Technology" | 
-#         apr.tx$Category=="Memberships",][,c("Description", "Amount")]
-#sum(apr.tx[apr.tx$Category.folder=="Utilities" | apr.tx$Category.folder=="Technology",]$Amount)
+
+ParseMonthlyExpenses <- function(d.frame, date.col, spec.month, spec.year) {
+  #
+  # Args:
+  # 
+  # Returns:
+  #   A dataframe containing expenses for a specifided month, if specified, or
+  #   a set of dataframes for each full month available, if not.
+  if(missing(spec.year)) {
+    if(year(max(d.frame$date.col)) == year(min(d.frame$date.col))) {
+      spec.year = year(max(d.frame$date.col))
+    } else if(year(Sys.Date()) %in% year(d.frame$date.col)) {
+      spec.year = Sys.Date()
+    } else {
+      stop("Year is ambiguous; must be supplied by user")
+    }
+  }
+  if(!missing(spec.month)) {
+    if(as.Date(spec.month)) {
+      spec.month = as.Date(spec.month)
+    } else if(spec.month %in% month.name) {
+      
+    } else if(spec.month %in% month.abb) {
+      
+    } else {
+      stop("Supplied parameter, 'Month' is invalid")
+    }
+    spec.date = Sys.Date()
+    year(spec.date) = spec.year
+    month(spec.date) = spec.month %m+% months(1)
+    day(spec.date) = rollback(spec.date)
+  } else {
+    stop("Required parameter, Month, not supplied")
+  }
+  return(month.df)
+}
+#may_simple.df = simple.tx[simple.tx$Date >= "2018-04-01" & simple.tx$Date <= "2018-04-30",]
+#aggregate(Amount.colnm ~ Category.colnm, may_simple.df, sum)
+#may_simple.df[may_simple.df$Category.folder=="Utilities" | may_simple.df$Category.folder=="Technology",]$Description
+#may_simple.df[may_simple.df$Category.folder=="Utilities" | 
+#         may_simple.df$Category.folder=="Technology" | 
+#         may_simple.df$Category=="Memberships",][,c("Description", "Amount")]
+#sum(may_simple.df[may_simple.df$Category.folder=="Utilities" | may_simple.df$Category.folder=="Technology",]$Amount)
+
+## Monthly
+# mo_simple.tx = simple.tx[simple.tx$Date >= "2017-01-01" & simple.tx$Date < "2017-02-01",]
+# mo_simple.tx$Category.folder=="Uncategorized",]
+#ggplot(mo_simple.tx, aes(Date, Amount, colour=Category.folder, fill=Category.folder)) +
+#  geom_bar(stat="identity") +
+#  geom_text(aes(label=Number))
+
+#interval(min(simple.tx$Date), max(simple.tx$Date)) %/% months(1)
+#min(simple.tx$Date) %m+% months(1)
